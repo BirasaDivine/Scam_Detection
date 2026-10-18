@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from schemas import AnalyzeRequest, AnalyzeResponse, Reason
 from chat_parser import parse_chat
-from masking import mask
+from masking import mask, names_from_senders
 
 app = FastAPI(title="ScamGuard API")
 
@@ -15,7 +15,8 @@ def health():
 def analyze(req: AnalyzeRequest):
     # STUB: not a real model. It only lets us build the frontend.
     messages = parse_chat(req.text)
-    texts = [mask(m.text) for m in messages]   # only masked text is used from here on
+    names = names_from_senders(m.sender for m in messages)
+    texts = [mask(m.text, names) for m in messages]
     hit = next(
         ((i, t) for i, t in enumerate(texts)
          if "fee" in t.lower() or "urgent" in t.lower()),
