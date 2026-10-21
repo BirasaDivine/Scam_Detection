@@ -50,7 +50,7 @@ ANALYZE_BODY = {
 
 def create_app(settings: Optional[Settings] = None, engine: Optional[Engine] = None) -> FastAPI:
     settings = settings or load_settings()
-    engine = engine or load_engine(settings.model_dir)
+    engine = engine or load_engine(settings.model_dir, settings.require_model)
 
     # Access logs never hold bodies, but they are off anyway: nothing about a request is logged.
     logging.getLogger("uvicorn.access").disabled = True

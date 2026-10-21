@@ -69,8 +69,12 @@ def make_prepare(masking: ModuleType, chunking: ModuleType) -> Prepare:
     return prepare
 
 
-def load_engine(model_dir: Path) -> Engine:
+def load_engine(model_dir: Path, require_model: bool = False) -> Engine:
     missing = [f for f in MODEL_FILES if not (model_dir / f).is_file()]
+    if missing and require_model:
+        raise RuntimeError(
+            f"SCAMGUARD_REQUIRE_MODEL is set but these model files are missing: {', '.join(missing)}."
+        )
     if missing:
         log.warning("Model files missing (%s). Starting in MOCK mode.", ", ".join(missing))
         return mock_engine()

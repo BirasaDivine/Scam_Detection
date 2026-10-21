@@ -20,6 +20,8 @@ class Settings:
     allowed_origins: list[str]
     timeout_seconds: float
     model_dir: Path
+    # On a server, refuse to start without the model files instead of serving the mock
+    require_model: bool = False
 
 
 def load_settings() -> Settings:
@@ -28,4 +30,5 @@ def load_settings() -> Settings:
         allowed_origins=[o.strip() for o in origins.split(",") if o.strip()],
         timeout_seconds=float(os.environ.get("SCAMGUARD_TIMEOUT_SECONDS", "20")),
         model_dir=Path(os.environ.get("SCAMGUARD_MODEL_DIR", BACKEND_DIR / "model")),
+        require_model=os.environ.get("SCAMGUARD_REQUIRE_MODEL", "").strip().lower() in {"1", "true", "yes"},
     )
