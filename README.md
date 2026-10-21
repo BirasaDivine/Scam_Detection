@@ -71,4 +71,59 @@ cd frontend; npm test
 
 ## Model files
 
-Put `svm_plain.joblib`, `cutoffs.json`, `masking.py` and `chunking.py` in `backend/model/`. The joblib and cutoffs files are gitignored and must never be committed. Uploaded chats must never be committed either.
+Put `svm_plain.joblib`, `cutoffs.json`, `masking.py` and `chunking.py` in `backend/model/`. They are committed, because Render builds the backend image from the repo. `golden_cases.json` and the notebook are gitignored. Uploaded chats must never be committed.
+
+## Deploy
+
+The backend runs on Render and the frontend on Netlify, both built from this GitHub repo. Each needs the other's address, so choose the Netlify site name first.
+
+### 1. Choose the Netlify address
+
+Pick a site name, for example `scamguard-demo`. The address is then `https://scamguard-demo.netlify.app`. You enter the same name in step 3.
+
+### 2. Backend on Render
+
+1. Push the repo to GitHub.
+2. In Render choose **New > Blueprint** and pick the repo. Render reads `render.yaml` and builds `backend/Dockerfile`.
+3. Render asks for one value. Set `SCAMGUARD_ALLOWED_ORIGIN` to the Netlify address from step 1, with no trailing slash.
+4. Apply. The first build takes several minutes.
+5. When the service is live, open `https://<your-service>.onrender.com/health`. It must show `"mock": false`. Note the service address.
+
+### 3. Frontend on Netlify
+
+1. Choose **Add new site > Import an existing project** and pick the repo. Netlify reads `netlify.toml`, so there is nothing to type for the build.
+2. Set the site name to the one from step 1.
+3. Under **Site configuration > Environment variables** add `VITE_API_URL` with the Render address, for example `https://scamguard-api.onrender.com`, with no trailing slash.
+4. Deploy. If you deploy before setting `VITE_API_URL`, the build stops and says so. Set it and deploy again.
+
+### Environment variables
+
+| Where | Name | Value |
+| --- | --- | --- |
+| Render | `SCAMGUARD_ALLOWED_ORIGIN` | Netlify address. Several can be separated with commas, for example to add a custom domain. |
+| Render | `SCAMGUARD_REQUIRE_MODEL` | Already `1` in `render.yaml`. The deploy stops if a model file is missing, instead of serving the mock. |
+| Render | `SCAMGUARD_TIMEOUT_SECONDS` | Already `20` in `render.yaml`. |
+| Netlify | `VITE_API_URL` | Render address. It is read at build time, so changing it needs a new deploy. |
+
+### Things to know
+
+- **Free plan sleep:** a free Render service sleeps after 15 minutes without requests. The first check after a sleep can take up to a minute. The page wakes the service as soon as it opens, so this is usually hidden while the person adds their chat.
+- **Memory:** the backend uses about 200 MB, which fits the 512 MB free plan.
+- **Changing a variable** on Render or Netlify restarts or rebuilds the service by itself.
+- **Updating the model:** replace the files in `backend/model/`, run the backend tests, commit and push. Render redeploys on every push.
+
+### If something does not work
+
+| Symptom | Cause |
+| --- | --- |
+| The page says it could not reach the checker | `SCAMGUARD_ALLOWED_ORIGIN` does not match the Netlify address exactly. Check `https`, spelling and the trailing slash. Or the service is still waking up, so try again. |
+| Netlify build fails with "VITE_API_URL is not set" | Add the variable and deploy again. |
+| Render deploy fails with "SCAMGUARD_REQUIRE_MODEL is set but these model files are missing" | A file in `backend/model/` was not committed. |
+| The page shows the MOCK MODEL banner | The backend is running without model files. This cannot happen on Render while `SCAMGUARD_REQUIRE_MODEL` is `1`. |
+
+To try the image on your computer first:
+
+```powershell
+docker build -t scamguard-api backend
+docker run --rm -p 8000:10000 -e SCAMGUARD_ALLOWED_ORIGIN=http://localhost:5173 -e SCAMGUARD_REQUIRE_MODEL=1 scamguard-api
+```
