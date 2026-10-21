@@ -28,8 +28,9 @@ export class ApiError extends Error {
 }
 
 const BASE = (import.meta.env.VITE_API_URL ?? "http://localhost:8000").replace(/\/$/, "");
-// A little longer than the backend's own timeout, so its 504 normally arrives first.
-const CLIENT_TIMEOUT_MS = 30_000;
+// Longer than the backend's own timeout, so its 504 arrives first. It also leaves time for a
+// sleeping free Render service to wake up (about a minute) before the first check.
+const CLIENT_TIMEOUT_MS = 70_000;
 
 export async function getHealth(signal?: AbortSignal): Promise<Health> {
   const res = await fetch(`${BASE}/health`, { signal });
