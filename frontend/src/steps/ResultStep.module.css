@@ -1,0 +1,114 @@
+.loading,
+.result,
+.error {
+  display: grid;
+  gap: 12px;
+}
+
+.result {
+  gap: 20px;
+}
+
+.skeleton {
+  display: grid;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.skeleton span {
+  height: 14px;
+  border-radius: var(--radius-pill);
+  background: var(--sunken);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.skeleton span:nth-child(1) {
+  width: 70%;
+  height: 24px;
+}
+
+.skeleton span:nth-child(2) {
+  width: 55%;
+}
+
+.skeleton span:nth-child(3) {
+  width: 40%;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.verdict,
+.errorTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.verdict svg,
+.errorTitle svg {
+  flex: none;
+}
+
+.verdict:focus,
+.errorTitle:focus {
+  outline: none;
+}
+
+.verdict:focus-visible,
+.errorTitle:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+
+.verdict[data-band="high"] svg,
+.verdict[data-band="medium"] svg {
+  color: var(--scam);
+}
+
+.verdict[data-band="borderline"] svg {
+  color: var(--borderline);
+}
+
+.verdict[data-band="low"] svg {
+  color: var(--accent);
+}
+
+.errorTitle {
+  font-size: 1.25rem;
+}
+
+.errorTitle svg {
+  color: var(--scam);
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 40px;
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+}
+
+.facts dt {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.facts dd {
+  margin: 0;
+}
+
+.small {
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}

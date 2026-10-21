@@ -1,0 +1,61 @@
+.summaryRow {
+  display: flex;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.summary {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+}
+
+.summary svg {
+  flex: none;
+  color: var(--muted);
+}
+
+.summaryText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Square side button, like the shuffle button in the reference */
+.editButton {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--accent-soft);
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.editButton:hover {
+  border-color: var(--accent);
+}
+
+.privacy {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 14px;
+  color: var(--muted);
+}
+
+.privacy svg {
+  flex: none;
+  margin-top: 3px;
+  color: var(--accent);
+}
