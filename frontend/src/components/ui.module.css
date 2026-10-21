@@ -1,0 +1,135 @@
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 20px;
+}
+
+.cardTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.cardTitle:focus {
+  outline: none;
+}
+
+.cardTitle:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.actionsEnd {
+  margin-left: auto;
+}
+
+.textButton,
+.primaryButton,
+.secondaryButton,
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  border-radius: var(--radius-control);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.textButton {
+  padding: 8px 6px;
+  border: 0;
+  background: none;
+}
+
+.textButton:hover:not(:disabled) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.primaryButton {
+  padding: 10px 18px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.primaryButton:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.secondaryButton {
+  padding: 10px 18px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+}
+
+.secondaryButton:hover:not(:disabled) {
+  background: var(--sunken);
+}
+
+.iconButton {
+  min-width: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+}
+
+.iconButton:hover {
+  color: var(--ink);
+  background: var(--sunken);
+}
+
+.textButton:disabled,
+.primaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.fieldError {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  margin-top: 10px;
+  color: var(--scam);
+  font-size: 1rem;
+}
+
+.fieldError svg {
+  flex: none;
+  margin-top: 3px;
+}
+
+.note {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.note svg {
+  flex: none;
+  margin-top: 3px;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}

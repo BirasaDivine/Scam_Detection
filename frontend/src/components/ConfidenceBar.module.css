@@ -1,0 +1,51 @@
+.wrap {
+  display: grid;
+  gap: 10px;
+}
+
+.bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  max-width: 240px;
+}
+
+.segment {
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--border);
+}
+
+.bar[data-band="high"] .segment[data-filled],
+.bar[data-band="medium"] .segment[data-filled] {
+  background: var(--scam);
+}
+
+.bar[data-band="borderline"] .segment[data-filled] {
+  background: var(--borderline);
+}
+
+.bar[data-band="low"] .segment[data-filled] {
+  background: var(--accent);
+}
+
+.caption {
+  color: var(--muted);
+}
+
+.label {
+  font-weight: 600;
+}
+
+.label[data-band="high"],
+.label[data-band="medium"] {
+  color: var(--scam);
+}
+
+.label[data-band="borderline"] {
+  color: var(--borderline);
+}
+
+.label[data-band="low"] {
+  color: var(--accent);
+}
