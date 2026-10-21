@@ -31,10 +31,13 @@ py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 pip install -r requirements-dev.txt
-Copy-Item .env.example .env
 $env:SCAMGUARD_ALLOWED_ORIGIN = "http://localhost:5173"
 uvicorn app.main:app --port 8000 --no-access-log
 ```
+
+Settings are read from environment variables (see `backend/.env.example` for the list): `SCAMGUARD_ALLOWED_ORIGIN`, `SCAMGUARD_TIMEOUT_SECONDS` (default 20) and `SCAMGUARD_MODEL_DIR` (default `backend/model`).
+
+API: `POST /analyze` takes JSON `{"text": "...", "source": "whatsapp" | "plain" | "sms"}` or a multipart form with `file` (.txt, at most 1 MB) and `source`. Errors come back as `{"detail": "..."}` with 400, 413, 415, 422 or 504. Error messages never repeat what was sent.
 
 Check it: `Invoke-RestMethod http://localhost:8000/health`
 

@@ -1,22 +1,36 @@
 from typing import Literal
-from pydantic import BaseModel, Field
+
+from pydantic import BaseModel, ConfigDict, Field
+
+Source = Literal["whatsapp", "plain", "sms"]
+Verdict = Literal["scam", "not_scam"]
+Band = Literal["high", "medium", "borderline", "low"]
+Rule = Literal["sms", "dialogue"]
 
 
-class AnalyzeRequest(BaseModel):
-    text: str = Field(min_length=1, max_length=20000)
-    consent_to_store: bool = False
+class TextRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
-
-class Reason(BaseModel):
-    message_index: int
-    excerpt: str
-    why: str
+    text: str
+    source: Source
 
 
 class AnalyzeResponse(BaseModel):
-    verdict: Literal["scam", "not_scam", "unsure"]
-    confidence: float = Field(ge=0, le=1)
-    reasons: list[Reason]
-    messages_analyzed: int
-    model: str
+    model_config = ConfigDict(extra="forbid")
+
+    verdict: Verdict
+    band: Band
+    pieces_scored: int = Field(ge=1)
+    source_rule: Rule
+    model_version: str
     disclaimer: str
+
+
+class ErrorResponse(BaseModel):
+    detail: str
+
+
+class HealthResponse(BaseModel):
+    status: Literal["ok"]
+    model_version: str
+    mock: bool
