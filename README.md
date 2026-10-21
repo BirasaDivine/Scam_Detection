@@ -43,7 +43,13 @@ Check it: `Invoke-RestMethod http://localhost:8000/health`
 
 If PowerShell blocks `Activate.ps1`, run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once.
 
-If any model file is missing, the backend starts in mock mode. `/health` then reports `"mock": true` and the UI shows a MOCK MODEL banner.
+If any model file is missing, the backend starts in mock mode. `/health` then reports `"mock": true` and the UI shows a MOCK MODEL banner. If all four files are present but cannot be loaded, the backend refuses to start instead of falling back to mock.
+
+How a chat is scored with the real model, as in the training notebook:
+
+- **Single SMS:** the whole text is masked and scored as one piece.
+- **WhatsApp or plain text:** the messages are joined, cut into pieces of at most 45 words (a leftover under 10 words is dropped), then each piece is masked and scored. Chats under 10 words are refused as too short.
+- **Result:** the highest piece score is compared with the cut-offs in `cutoffs.json` (placeholder rule, see `backend/app/aggregate.py`).
 
 ## Run the frontend (PowerShell)
 
