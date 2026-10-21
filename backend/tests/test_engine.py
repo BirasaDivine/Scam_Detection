@@ -5,7 +5,7 @@ import pytest
 
 from app.cutoffs import CutoffsFile, load_cutoffs
 from app.engine import MODEL_FILES, Engine, load_engine, mock_engine, model_version_for
-from app.model_stubs import chunk
+from app.model_stubs import prepare as stub_prepare
 from app.pipeline import analyze_text
 from app.scoring import MockScorer, Scorer
 
@@ -24,10 +24,10 @@ def test_any_missing_file_starts_in_mock_mode(tmp_path):
     assert load_engine(tmp_path).mock
 
 
-def test_all_files_present_fails_loudly_until_wired(tmp_path):
+def test_unreadable_model_files_fail_loudly_instead_of_falling_back_to_mock(tmp_path):
     for name in MODEL_FILES:
         (tmp_path / name).write_text("x")
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError, match="could not be loaded"):
         load_engine(tmp_path)
 
 
@@ -51,9 +51,9 @@ def test_model_version_prefers_cutoffs_field(tmp_path):
     assert model_version_for(without, joblib_path) == expected
 
 
-def test_stub_chunk_keeps_pieces_to_45_words():
-    pieces = chunk(["word " * 100])
-    assert [len(p.split()) for p in pieces] == [45, 45, 10]
+def test_stub_prepare_keeps_chat_pieces_to_45_words_and_sms_whole():
+    assert [len(p.split()) for p in stub_prepare(["word " * 100], "dialogue")] == [45, 45, 10]
+    assert len(stub_prepare(["word " * 100], "sms")) == 1
 
 
 class RecordingScorer(Scorer):
@@ -81,7 +81,7 @@ def test_rule_follows_source(source, rule):
 def test_rule_picks_its_own_cutoffs():
     sms = {"fpr_01": 10.0, "fpr_05": 9.0, "fpr_10": 8.0}
     cutoffs = CutoffsFile(sms=sms, dialogue=RULE)
-    engine = Engine(MockScorer(), cutoffs, str, lambda m: m, "t", True)
+    engine = Engine(MockScorer(), cutoffs, stub_prepare, "t", True)
     # one trigger word scores 1.0: low under the sms fixture, medium under the dialogue one
     assert analyze_text("urgent", "sms", engine).band == "low"
     assert analyze_text("urgent", "plain", engine).band == "medium"

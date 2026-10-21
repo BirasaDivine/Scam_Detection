@@ -22,10 +22,9 @@ def analyze_text(raw: str, source: Source, engine: Engine) -> AnalyzeResponse:
 
     rule = "sms" if source == "sms" else "dialogue"
     # Only message text goes on. Sender names stay in the parser's output.
-    texts = [engine.mask(m.text) for m in messages]
-    pieces = [p for p in engine.chunk(texts) if p.strip()]
+    pieces = [p for p in engine.prepare([m.text for m in messages], rule) if p.strip()]
     if not pieces:
-        raise AppError(400, errors.NO_MESSAGES)
+        raise AppError(400, errors.TOO_SHORT)
 
     cutoffs = engine.cutoffs.for_rule(rule)
     verdict, band = band_for(aggregate(engine.scorer.score_pieces(pieces), cutoffs), cutoffs)
