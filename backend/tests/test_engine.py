@@ -85,3 +85,20 @@ def test_rule_picks_its_own_cutoffs():
     # one trigger word scores 1.0: low under the sms fixture, medium under the dialogue one
     assert analyze_text("urgent", "sms", engine).band == "low"
     assert analyze_text("urgent", "plain", engine).band == "medium"
+
+
+def test_require_model_refuses_to_start_in_mock_mode(tmp_path):
+    with pytest.raises(RuntimeError, match="svm_plain.joblib"):
+        load_engine(tmp_path, require_model=True)
+
+
+def test_require_model_setting_is_read_from_the_environment(monkeypatch):
+    from app.config import load_settings
+
+    monkeypatch.delenv("SCAMGUARD_REQUIRE_MODEL", raising=False)
+    assert load_settings().require_model is False
+    for value in ("1", "true", "TRUE", "yes"):
+        monkeypatch.setenv("SCAMGUARD_REQUIRE_MODEL", value)
+        assert load_settings().require_model is True
+    monkeypatch.setenv("SCAMGUARD_REQUIRE_MODEL", "0")
+    assert load_settings().require_model is False
