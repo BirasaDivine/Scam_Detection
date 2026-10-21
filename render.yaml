@@ -1,0 +1,22 @@
+# Render Blueprint for the ScamGuard API.
+# Render dashboard: New > Blueprint > pick this repo. It builds backend/Dockerfile.
+# The only value you type in is SCAMGUARD_ALLOWED_ORIGIN (your Netlify site address).
+services:
+  - type: web
+    name: scamguard-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      # Your Netlify address, for example https://scamguard-demo.netlify.app (no trailing slash).
+      # Several addresses can be separated with commas.
+      - key: SCAMGUARD_ALLOWED_ORIGIN
+        sync: false
+      # Stop the deploy instead of serving the fake mock model if a model file is missing
+      - key: SCAMGUARD_REQUIRE_MODEL
+        value: "1"
+      - key: SCAMGUARD_TIMEOUT_SECONDS
+        value: "20"
