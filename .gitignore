@@ -1,5 +1,17 @@
 .venv/
 __pycache__/
 node_modules/
-.env
+.env*
+!.env.example
 dist/
+
+# Model artefacts and any chat data stay out of git
+backend/model/*.joblib
+backend/model/*.pkl
+backend/model/cutoffs.json
+backend/model/golden_cases.json
+*.chat.txt
+samples/private/
+.pytest_cache/
+coverage/
+*.tsbuildinfo

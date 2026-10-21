@@ -1,0 +1,56 @@
+/* Palette and type. Flat fills only: no gradients, glow or glass. */
+:root {
+  --bg: #fafaf8;
+  --surface: #ffffff;
+  --border: #e3e3de;
+  --ink: #141414;
+  --muted: #6b6b66;
+  --accent: #1f6b4a;
+  --scam: #b3261e;
+  --borderline: #9a6700;
+  --focus: #1f6b4a;
+
+  --radius-control: 4px;
+  --radius-card: 6px;
+
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121211;
+    --surface: #1b1b1a;
+    --border: #34342f;
+    --ink: #f2f2ee;
+    --muted: #a3a39c;
+    --accent: #5cbf8f;
+    --scam: #f2867e;
+    --borderline: #e0b04a;
+    --focus: #5cbf8f;
+    color-scheme: dark;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
