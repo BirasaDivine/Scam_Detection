@@ -4,8 +4,8 @@ Place the exported files here. They are not written by hand.
 
 | File | Tracked in git | Purpose |
 | --- | --- | --- |
-| `svm_plain.joblib` | no | TF-IDF + LinearSVC pipeline |
-| `cutoffs.json` | no | decision_function cut-offs per rule |
+| `svm_plain.joblib` | yes | TF-IDF + LinearSVC pipeline (committed so Render can build the image) |
+| `cutoffs.json` | yes | decision_function cut-offs per rule |
 | `masking.py` | yes | masking v2, exported from the notebook |
 | `chunking.py` | yes | piece chunking, exported from the notebook |
 | `golden_cases.json` | no | 20 reference cases for the parity tests (tests skip without it) |
