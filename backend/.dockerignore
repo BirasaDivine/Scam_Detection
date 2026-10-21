@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+.env.*
+tests/
+pytest.ini
+requirements-dev.txt
+name_test.py
+masking.py
+model/*.ipynb
+model/golden_cases.json
+model/README.md
