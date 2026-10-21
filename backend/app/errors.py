@@ -2,6 +2,7 @@
 
 EMPTY = "The chat is empty. Add some messages and try again."
 NO_MESSAGES = "We found no messages to check in this chat."
+TOO_SHORT = "This chat is too short to check. Add more messages, or choose Single SMS for one message."
 NOT_WHATSAPP = "This does not look like a WhatsApp export. Try Plain text as the chat source."
 UNREADABLE = "We could not read this file. Save it as plain UTF-8 text and try again."
 BAD_REQUEST_BODY = "The request could not be read."
