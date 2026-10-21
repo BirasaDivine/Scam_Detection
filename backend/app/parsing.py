@@ -40,7 +40,7 @@ SYSTEM_TEXT = re.compile(
     re.IGNORECASE,
 )
 EDITED = re.compile(r"\s*<This message was edited>$", re.IGNORECASE)
-DIRECTION_MARKS = "‎‏‪‫‬"
+DIRECTION_MARKS = "\u200e\u200f\u202a\u202b\u202c"
 
 
 def parse(raw: str, source: str) -> list[Message]:
@@ -81,11 +81,11 @@ def parse_whatsapp(text: str) -> list[Message]:
 def _normalise(raw: str) -> str:
     # Newer exports put a narrow no-break space before AM/PM
     return (
-        raw.replace("﻿", "")
+        raw.replace("\ufeff", "")
         .replace("\r\n", "\n")
         .replace("\r", "\n")
-        .replace(" ", " ")
-        .replace(" ", " ")
+        .replace("\u202f", " ")
+        .replace("\u00a0", " ")
     )
 
 
@@ -123,7 +123,7 @@ def _message_from(rest: str) -> Optional[Message]:
     if m is None:
         return None  # no "Name:" part, e.g. the Android encryption notice or "X joined"
     raw_text = m.group("text") or ""
-    if raw_text.startswith("‎"):
+    if raw_text.startswith("\u200e"):
         return None  # iPhone marks system text and media placeholders this way
     text = EDITED.sub("", raw_text.strip(DIRECTION_MARKS + " "))
     if SYSTEM_TEXT.search(text):

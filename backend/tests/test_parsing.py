@@ -17,14 +17,14 @@ Thank you
 """
 
 IOS_CHAT = (
-    "[12/03/24, 14:05:11] Family Group: ‎Messages and calls are end-to-end encrypted. "
+    "[12/03/24, 14:05:11] Family Group: \u200eMessages and calls are end-to-end encrypted. "
     "No one outside of this chat, not even WhatsApp, can read or listen to them.\n"
-    "‎[12/03/24, 14:05:12] Family Group: ‎Amina joined using this group's invite link\n"
+    "\u200e[12/03/24, 14:05:12] Family Group: \u200eAmina joined using this group's invite link\n"
     "[12/03/24, 14:05:20] Amina: Hi, I am from the bank\n"
     "[12/03/24, 14:06:01] Kwame: Ok\n"
     "and then?\n"
-    "‎[12/03/24, 14:06:30] Kwame: ‎image omitted\n"
-    "[12/03/24, 14:07:00] Amina: ‎This message was deleted.\n"
+    "\u200e[12/03/24, 14:06:30] Kwame: \u200eimage omitted\n"
+    "[12/03/24, 14:07:00] Amina: \u200eThis message was deleted.\n"
     "[12/03/24, 14:08:00] Amina: Please confirm your PIN\n"
 )
 
@@ -65,10 +65,10 @@ def test_sender_names_never_appear_in_message_text():
         "31/12/2024, 23:59 - Ann: hi",  # day-first only
         "12/03/24, 14:05 - Ann: hi",  # two-digit year
         "12.03.24, 14:05 - Ann: hi",  # dots
-        "12/03/2024, 2:05 PM - Ann: hi",  # narrow no-break space before PM
+        "12/03/2024, 2:05\u202fPM - Ann: hi",  # narrow no-break space before PM
         "[12/03/24, 14:05:11] Ann: hi",
         "[3/12/24, 2:05:11 PM] Ann: hi",
-        "[12/31/24, 11:59:59 a.m.] Ann: hi",
+        "[12/31/24, 11:59:59\u202fa.m.] Ann: hi",
     ],
 )
 def test_date_and_time_variants(line):
@@ -91,7 +91,7 @@ def test_impossible_stamps_are_not_headers(line):
 
 
 def test_crlf_and_bom_are_handled():
-    raw = "﻿12/03/2024, 14:05 - Ann: one\r\nsecond line\r\n12/03/2024, 14:06 - Bo: two\r\n"
+    raw = "\ufeff12/03/2024, 14:05 - Ann: one\r\nsecond line\r\n12/03/2024, 14:06 - Bo: two\r\n"
     assert texts(parse(raw, "whatsapp")) == ["one\nsecond line", "two"]
 
 
