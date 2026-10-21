@@ -6,9 +6,7 @@ node_modules/
 dist/
 
 # Model artefacts and any chat data stay out of git
-backend/model/*.joblib
 backend/model/*.pkl
-backend/model/cutoffs.json
 backend/model/golden_cases.json
 *.chat.txt
 samples/private/

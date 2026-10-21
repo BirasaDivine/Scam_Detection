@@ -1,0 +1,14 @@
+{
+  "model_version": "svm_plain_masked_v2_seed42_standard_split",
+  "trained_on": "6,267 masked v2 pieces, standard call-level split, seed 42, real spam kept, no topic hidden",
+  "sms": {
+    "fpr_01": 0.34717345663209526,
+    "fpr_05": 0.028324431809978554,
+    "fpr_10": -0.12959568844328123
+  },
+  "dialogue": {
+    "fpr_01": 0.10133805334216302,
+    "fpr_05": -0.30250515598192995,
+    "fpr_10": -0.545883060358889
+  }
+}
