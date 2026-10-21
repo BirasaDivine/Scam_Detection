@@ -34,10 +34,6 @@ export function TopBar() {
   return (
     <div className={styles.topBarWrap}>
       <div className={styles.topBar}>
-        <span className={styles.chip}>
-          <ShieldCheck size={16} aria-hidden="true" />
-          Research demo
-        </span>
         <button
           ref={button}
           type="button"
