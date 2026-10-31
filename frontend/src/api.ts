@@ -9,7 +9,6 @@ export interface AnalyzeResult {
   pieces_scored: number;
   source_rule: "sms" | "dialogue";
   model_version: string;
-  disclaimer: string;
   /** Null when the check could not be counted. */
   record_id?: string | null;
 }

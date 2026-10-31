@@ -7,8 +7,6 @@ export const RESULT: AnalyzeResult = {
   pieces_scored: 3,
   source_rule: "dialogue",
   model_version: "mock-0",
-  disclaimer:
-    "This is a research demonstration. It has not been validated for use in Africa, and it can be wrong.",
 };
 
 const json = (body: unknown, status = 200) =>
