@@ -28,7 +28,7 @@ from .schemas import (
     StatsResponse,
     TextRequest,
 )
-from .stats import StatsStore
+from .stats import StatsStore, open_store
 
 log = logging.getLogger("scamguard")
 
@@ -64,7 +64,7 @@ def create_app(
 ) -> FastAPI:
     settings = settings or load_settings()
     engine = engine or load_engine(settings.model_dir, settings.require_model)
-    store = store or StatsStore(settings.database_url)
+    store = store or open_store(settings.database_url)
 
     # Access logs never hold bodies, but they are off anyway: nothing about a request is logged.
     logging.getLogger("uvicorn.access").disabled = True

@@ -3,7 +3,7 @@ import sqlite3
 import pytest
 
 from app.insights import build_stats, recommend
-from app.stats import StatsStore
+from app.stats import PostgresStatsStore, SqliteStatsStore, open_store
 from tests.conftest import ADMIN_TOKEN, make_client
 
 SCAM_SMS = {"text": "Urgent: pay the fee to verify your PIN", "source": "sms"}
@@ -72,9 +72,9 @@ def test_stats_are_off_without_an_admin_token():
     assert make_client(admin_token="").get("/stats", headers=AUTH).status_code == 404
 
 
-class BrokenStore(StatsStore):
+class BrokenStore(SqliteStatsStore):
     def __init__(self):
-        super().__init__("sqlite:///:memory:")
+        super().__init__(":memory:")
 
     def record(self, verdict, input_format):
         raise sqlite3.OperationalError("disk full")
@@ -87,11 +87,11 @@ def test_verdict_is_returned_when_the_store_fails():
 
 
 def test_store_keeps_no_chat_text():
-    store = StatsStore("sqlite:///:memory:")
+    store = SqliteStatsStore(":memory:")
     client = make_client(store=store)
     canary = "zqcanary7f3a9c"
     client.post("/analyze", json={"text": f"{canary} pay the fee to verify your pin", "source": "sms"})
-    rows = store._sqlite.execute("SELECT * FROM checks").fetchall()
+    rows = store._conn.execute("SELECT * FROM checks").fetchall()
     assert len(rows) == 1
     assert canary not in repr(rows)
     assert set(rows[0][2:]) <= {"scam", "sms", None}
@@ -99,8 +99,8 @@ def test_store_keeps_no_chat_text():
 
 def test_sqlite_file_keeps_counts_between_restarts(tmp_path):
     url = f"sqlite:///{tmp_path / 'sub' / 'stats.db'}"
-    StatsStore(url).record("scam", "whatsapp")
-    assert StatsStore(url).counts() == [("scam", "whatsapp", None, 1)]
+    open_store(url).record("scam", "whatsapp")
+    assert open_store(url).counts() == [("scam", "whatsapp", None, 1)]
 
 
 def test_recommendation_needs_enough_checks():
@@ -132,3 +132,10 @@ def test_cors_allows_the_authorization_header(client):
     })
     assert r.status_code == 200
 
+
+
+def test_open_store_picks_the_backend_from_the_url():
+    assert isinstance(open_store("sqlite:///:memory:"), SqliteStatsStore)
+    assert PostgresStatsStore.placeholder == "%s"
+    with pytest.raises(ValueError):
+        open_store("mysql://nope")
