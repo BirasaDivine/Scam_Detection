@@ -21,8 +21,6 @@ def upload(client, data=CHAT, name="chat.txt", source="whatsapp", content_type="
     return client.post("/analyze", files={"file": (name, data, content_type)}, data={"source": source})
 
 
-# Health and the happy paths
-
 def test_health_reports_mock_mode(client):
     assert client.get("/health").json() == {"status": "ok", "model_version": "mock-0", "mock": True}
 
@@ -63,8 +61,6 @@ def test_utf16_file_is_read(client):
     assert upload(client, data=CHAT.decode().encode("utf-16")).status_code == 200
 
 
-# Schema
-
 def test_response_model_forbids_extra_fields():
     good = dict(verdict="scam", band="high", pieces_scored=1, source_rule="sms",
                 model_version="m", disclaimer="d")
@@ -78,8 +74,6 @@ def test_json_request_forbids_extra_fields(client):
     r = client.post("/analyze", json={"text": "hi", "source": "sms", "consent_to_store": True})
     assert r.status_code == 422
 
-
-# 400
 
 @pytest.mark.parametrize("text", ["", "   \n\t "])
 def test_empty_text_is_400(client, text):
@@ -107,8 +101,6 @@ def test_undecodable_file_is_400(client):
     assert r.status_code == 400 and "UTF-8" in r.json()["detail"]
 
 
-# 413
-
 def test_file_at_exactly_1_mb_is_accepted(client):
     assert upload(client, data=b"a" * MAX_FILE_BYTES, source="plain").status_code == 200
 
@@ -135,8 +127,6 @@ def test_2000_messages_are_accepted_and_2001_are_413(client):
     assert too_many.status_code == 413 and "2,000 messages" in too_many.json()["detail"]
 
 
-# 415
-
 @pytest.mark.parametrize("name", ["chat.pdf", "chat.txt.exe", "chat", "chat.zip"])
 def test_non_txt_file_name_is_415(client, name):
     r = upload(client, name=name)
@@ -151,8 +141,6 @@ def test_unsupported_request_content_type_is_415(client):
     r = client.post("/analyze", content=b"<chat/>", headers={"Content-Type": "application/xml"})
     assert r.status_code == 415
 
-
-# 422
 
 @pytest.mark.parametrize(
     "payload",
@@ -172,8 +160,6 @@ def test_upload_without_file_is_422(client):
     assert r.status_code == 422
 
 
-# Timeout
-
 class SlowScorer(Scorer):
     def score_pieces(self, pieces):
         time.sleep(1.0)
@@ -189,8 +175,6 @@ def test_slow_analysis_times_out_with_504():
     assert r.status_code == 504 and "too long" in r.json()["detail"]
     assert elapsed < 0.9  # answered without waiting for the scorer
 
-
-# CORS
 
 def test_cors_allows_only_the_configured_origin(client):
     def preflight(origin):

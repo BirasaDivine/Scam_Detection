@@ -72,8 +72,6 @@
   width: 70%;
 }
 
-/* File row */
-
 .fileRow {
   display: flex;
   align-items: center;
@@ -157,8 +155,6 @@
   align-self: flex-start;
   margin: -8px -10px 0 0;
 }
-
-/* Paste */
 
 .paste {
   display: grid;

@@ -3,7 +3,6 @@ import type { Source } from "../api";
 import { SOURCES } from "../copy";
 import styles from "./SourceRadio.module.css";
 
-/** Inline radios, as in the reference's "Security Type" card. The chosen option's hint shows below. */
 export function SourceRadio({ value, onChange }: { value: Source; onChange: (s: Source) => void }) {
   const name = useId();
   const hintId = useId();

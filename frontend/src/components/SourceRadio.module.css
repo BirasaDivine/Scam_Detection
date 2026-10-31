@@ -28,7 +28,6 @@
   cursor: pointer;
 }
 
-/* Ring radio as in the reference: thin ring when off, thick ink ring when on */
 .radio {
   flex: none;
   width: 18px;

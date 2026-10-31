@@ -4,7 +4,7 @@ from pathlib import Path
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
 
-MAX_FILE_BYTES = 1024 * 1024  # 1 MB, for an uploaded file or pasted text
+MAX_FILE_BYTES = 1024 * 1024
 MAX_MESSAGES = 2000
 # Multipart framing around a 1 MB file is small. Anything bigger is refused before parsing.
 MAX_BODY_BYTES = MAX_FILE_BYTES + 64 * 1024

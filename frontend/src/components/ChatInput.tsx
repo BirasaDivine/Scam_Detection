@@ -51,7 +51,6 @@ function GhostCard() {
   );
 }
 
-/** Strip with a dashed drop card in the middle and faded placeholder cards at the sides. */
 export function DropZone({ inputId, onFile }: { inputId: string; onFile: (file: File) => void }) {
   const [dragging, setDragging] = useState(false);
 
@@ -88,7 +87,6 @@ export function DropZone({ inputId, onFile }: { inputId: string; onFile: (file: 
   );
 }
 
-/** Flat stack of sheets, like the folder in the reference, with the count on the front sheet. */
 function FileStack({ messages, size }: { messages: number; size: number }) {
   const [value, unit] = formatSize(size);
   return (

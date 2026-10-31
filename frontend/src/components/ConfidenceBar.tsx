@@ -2,7 +2,7 @@ import type { Band } from "../api";
 import { BAND_LABEL, BAND_SEGMENTS } from "../copy";
 import styles from "./ConfidenceBar.module.css";
 
-/** Takes the place of the reference's "Strength" line. The text label carries the meaning; colour repeats it. */
+/** The text label carries the meaning; colour repeats it. */
 export function ConfidenceBar({ band }: { band: Band }) {
   const filled = BAND_SEGMENTS[band];
   return (

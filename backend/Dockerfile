@@ -9,7 +9,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# Dependencies first, so code changes do not reinstall them
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 

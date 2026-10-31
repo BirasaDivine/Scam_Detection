@@ -17,7 +17,6 @@ interface Props {
   onAnalyse: () => void;
 }
 
-/** Laid out like the reference's "Security Type" card. */
 export function DetailsStep({ source, onSource, summary, onBack, onAnalyse }: Props) {
   const SummaryIcon = summary.kind === "file" ? FileText : ClipboardText;
   return (

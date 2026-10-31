@@ -49,7 +49,7 @@ def names_from_senders(senders):
         for part in s.split():
             if len(part) >= 3:
                 names.add(part)
-    return sorted(names, key=len, reverse=True)  # longest first
+    return sorted(names, key=len, reverse=True)
 
 
 def _mask_known(text, names):

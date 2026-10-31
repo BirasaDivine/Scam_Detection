@@ -13,7 +13,6 @@ export function MockBanner() {
   );
 }
 
-/** Chip on the left, menu on the right. The menu opens a short About panel. */
 export function TopBar() {
   const [open, setOpen] = useState(false);
   const panelId = useId();

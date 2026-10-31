@@ -64,7 +64,7 @@ def parse_whatsapp(text: str) -> list[Message]:
         m = _match_header(line)
         if m is None:
             if messages and not in_system:
-                messages[-1].text += "\n" + line  # next line of a multi-line message
+                messages[-1].text += "\n" + line
             continue  # text before the first header, or part of a system line
 
         found_header = True

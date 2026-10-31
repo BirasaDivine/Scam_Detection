@@ -97,4 +97,4 @@ def test_real_uvicorn_server_never_prints_request_bodies(tmp_path):
         output = proc.communicate(timeout=10)[0].decode("utf-8", "replace")
     assert "Application startup complete" in output  # the log stream was captured
     assert CANARY not in output
-    assert "POST /analyze" not in output  # access log is off
+    assert "POST /analyze" not in output
