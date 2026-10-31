@@ -104,7 +104,7 @@ describe("Step 3: Result", () => {
     return user;
   }
 
-  it("shows the verdict, band, pieces, model version and disclaimer in a live region", async () => {
+  it("shows the verdict, band, pieces and model version in a live region", async () => {
     const fetchMock = mockBackend();
     const user = await analyseText("Pay the fee");
 
@@ -114,7 +114,7 @@ describe("Step 3: Result", () => {
     expect(screen.getByText("High")).toBeInTheDocument();
     expect(screen.getByText("Pieces scored").nextElementSibling).toHaveTextContent(/^3$/);
     expect(screen.getByText("Model").nextElementSibling).toHaveTextContent(/^mock-0$/);
-    expect(screen.getByText(RESULT.disclaimer)).toBeInTheDocument();
+    expect(screen.queryByText(/not been validated/)).not.toBeInTheDocument();
 
     const [, init] = fetchMock.mock.calls.find(([url]) => String(url).endsWith("/analyze"))!;
     expect(JSON.parse(String(init?.body))).toEqual({ text: "Pay the fee", source: "sms" });

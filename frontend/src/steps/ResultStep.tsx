@@ -3,7 +3,6 @@ import {
   ArrowLeft,
   ArrowsClockwise,
   CheckCircle,
-  Info,
   Question,
   WarningCircle,
   WarningOctagon,
@@ -111,11 +110,6 @@ function Result({ result, onRestart }: { result: AnalyzeResult; onRestart: () =>
           <dd className={`${ui.mono} ${styles.small}`}>{breakable(result.model_version)}</dd>
         </div>
       </dl>
-
-      <p className={ui.note}>
-        <Info size={18} aria-hidden="true" />
-        {result.disclaimer}
-      </p>
 
       <div className={ui.actions}>
         <button type="button" className={`${ui.textButton} ${ui.actionsEnd}`} onClick={onRestart}>
