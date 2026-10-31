@@ -60,7 +60,7 @@ How a chat is scored with the real model, as in the training notebook:
 
 - **Single SMS:** the whole text is masked and scored as one piece.
 - **WhatsApp or plain text:** the messages are joined, cut into pieces of at most 45 words (a leftover under 10 words is dropped), then each piece is masked and scored. Chats under 10 words are refused as too short.
-- **Result:** the highest piece score is compared with the cut-offs in `cutoffs.json` (placeholder rule, see `backend/app/aggregate.py`).
+- **Result:** the highest piece score is compared with the cut-offs in `cutoffs.json`. This rule is not yet checked on whole chats; see `backend/app/aggregate.py`.
 
 ## Run the frontend (PowerShell)
 
