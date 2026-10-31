@@ -1,0 +1,162 @@
+.main {
+  max-width: 560px;
+}
+
+@media (min-width: 900px) {
+  .main {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 560px;
+  }
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.form {
+  display: grid;
+  gap: 10px;
+}
+
+.label {
+  font-weight: 600;
+}
+
+.input {
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+}
+
+.submit {
+  justify-self: start;
+  margin-top: 6px;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 14px 0 0;
+}
+
+.tiles > div {
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+}
+
+.tiles dt {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.tiles dd {
+  margin: 2px 0 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.sub {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.tips {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tips li {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.tips svg {
+  flex: none;
+  margin-top: 3px;
+  color: var(--accent);
+}
+
+.bars {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bars li {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) 40px;
+  align-items: center;
+  gap: 10px;
+}
+
+.barLabel {
+  font-size: 0.9375rem;
+}
+
+.track {
+  display: block;
+  height: 12px;
+}
+
+.bar {
+  display: block;
+  height: 100%;
+  min-width: 4px;
+  border-radius: 0 4px 4px 0;
+  background: var(--accent);
+}
+
+.barValue {
+  text-align: right;
+}
+
+.footnote {
+  margin-top: 12px;
+  font-size: 0.875rem;
+}
+
+.table {
+  width: 100%;
+  margin-top: 12px;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.table thead th {
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.table td {
+  text-align: right;
+}
+
+.table thead th:not(:first-child) {
+  text-align: right;
+}
+
+.table tbody th {
+  font-weight: 400;
+}

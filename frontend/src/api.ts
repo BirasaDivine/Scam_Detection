@@ -1,6 +1,7 @@
 export type Source = "whatsapp" | "plain" | "sms";
 export type Verdict = "scam" | "not_scam";
 export type Band = "high" | "medium" | "borderline" | "low";
+export type Origin = "whatsapp" | "sms" | "telegram" | "facebook" | "instagram" | "email" | "phone_call" | "other";
 
 export interface AnalyzeResult {
   verdict: Verdict;
@@ -9,6 +10,18 @@ export interface AnalyzeResult {
   source_rule: "sms" | "dialogue";
   model_version: string;
   disclaimer: string;
+  /** Null when the check could not be counted. */
+  record_id?: string | null;
+}
+
+export interface Stats {
+  total: number;
+  scam: number;
+  not_scam: number;
+  by_input_format: Record<Source, { scam: number; not_scam: number }>;
+  scam_origins: Record<Origin, number>;
+  scam_origin_unreported: number;
+  recommendations: string[];
 }
 
 export interface Health {
@@ -72,6 +85,36 @@ export async function analyze(input: AnalyzeInput, signal: AbortSignal): Promise
   }
 
   if (res.ok) return res.json();
+  throw await errorFrom(res);
+}
+
+export async function setOrigin(recordId: string, origin: Origin): Promise<void> {
+  let res: Response;
+  try {
+    res = await fetch(`${BASE}/checks/${encodeURIComponent(recordId)}/origin`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ origin }),
+    });
+  } catch {
+    throw new ApiError(0, "");
+  }
+  if (!res.ok) throw await errorFrom(res);
+}
+
+export async function getStats(token: string, signal?: AbortSignal): Promise<Stats> {
+  let res: Response;
+  try {
+    res = await fetch(`${BASE}/stats`, { headers: { Authorization: `Bearer ${token}` }, signal });
+  } catch {
+    if (signal?.aborted) throw new DOMException("Cancelled", "AbortError");
+    throw new ApiError(0, "");
+  }
+  if (res.ok) return res.json();
+  throw await errorFrom(res);
+}
+
+async function errorFrom(res: Response): Promise<ApiError> {
   let detail = "";
   try {
     const body = await res.json();
@@ -79,5 +122,5 @@ export async function analyze(input: AnalyzeInput, signal: AbortSignal): Promise
   } catch {
     // no JSON body, the fallback copy is used
   }
-  throw new ApiError(res.status, detail);
+  return new ApiError(res.status, detail);
 }

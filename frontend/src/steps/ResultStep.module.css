@@ -112,3 +112,7 @@
   font-size: 0.875rem;
   overflow-wrap: anywhere;
 }
+
+.origin {
+  margin-top: 16px;
+}

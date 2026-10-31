@@ -1,5 +1,6 @@
 import { Equals, FolderOpen, Info, ListChecks, ShieldCheck, X } from "@phosphor-icons/react";
 import { useEffect, useId, useRef, useState } from "react";
+import { PRIVACY_NOTE } from "../copy";
 import styles from "./Layout.module.css";
 
 export function MockBanner() {
@@ -51,7 +52,7 @@ export function TopBar() {
           ScamGuard is a capstone research demonstration. It reads an English chat and gives one verdict, scam or not
           scam, with a confidence band.
         </p>
-        <p>It is not a proven detector and it can be wrong. Your chat is analysed in memory and is not stored.</p>
+        <p>It is not a proven detector and it can be wrong. {PRIVACY_NOTE}</p>
       </div>
     </div>
   );

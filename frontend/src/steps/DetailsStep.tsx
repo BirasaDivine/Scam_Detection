@@ -2,6 +2,7 @@ import { ArrowLeft, ArrowRight, ClipboardText, FileText, Info, PencilSimple } fr
 import type { Source } from "../api";
 import { SourceRadio } from "../components/SourceRadio";
 import ui from "../components/ui.module.css";
+import { PRIVACY_NOTE } from "../copy";
 import styles from "./DetailsStep.module.css";
 
 export interface ChatSummary {
@@ -39,7 +40,7 @@ export function DetailsStep({ source, onSource, summary, onBack, onAnalyse }: Pr
 
       <p className={styles.privacy}>
         <Info size={18} aria-hidden="true" />
-        Your chat is analysed in memory and is not stored.
+        {PRIVACY_NOTE}
       </p>
 
       <div className={ui.actions}>

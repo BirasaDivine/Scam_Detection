@@ -2,6 +2,7 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import App from "../App";
+import { PRIVACY_NOTE } from "../copy";
 import { RESULT, WHATSAPP, chatFile, mockBackend } from "../test-utils";
 
 afterEach(() => vi.unstubAllGlobals());
@@ -75,7 +76,7 @@ describe("Step 2: Check details", () => {
     const group = screen.getByRole("group", { name: "Chat source" });
     expect(within(group).getAllByRole("radio")).toHaveLength(3);
     expect(within(group).getByRole("radio", { name: /whatsapp export/i })).toBeChecked();
-    expect(screen.getByText("Your chat is analysed in memory and is not stored.")).toBeInTheDocument();
+    expect(screen.getByText(PRIVACY_NOTE)).toBeInTheDocument();
   });
 
   it("goes back to step 1 and keeps the chat", async () => {

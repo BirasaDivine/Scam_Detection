@@ -11,6 +11,7 @@ import {
 import type { AnalyzeResult, Band } from "../api";
 import { formatCount } from "../chat";
 import { ConfidenceBar } from "../components/ConfidenceBar";
+import { OriginQuestion } from "../components/OriginQuestion";
 import ui from "../components/ui.module.css";
 import { VERDICT_TITLE, errorCopy } from "../copy";
 import styles from "./ResultStep.module.css";
@@ -35,11 +36,19 @@ function breakable(text: string) {
 
 /** The live region stays mounted from loading to result, so the change is announced. */
 export function ResultStep(props: Props) {
+  const { outcome } = props;
+  const recordId = outcome.state === "done" && outcome.result.verdict === "scam" ? outcome.result.record_id : null;
   return (
     <section aria-labelledby="step-heading" className={ui.card}>
       <div aria-live="polite" aria-atomic="true">
         <StepBody {...props} />
       </div>
+      {/* Outside the live region, so saving does not read the whole verdict again */}
+      {recordId && (
+        <div className={styles.origin}>
+          <OriginQuestion key={recordId} recordId={recordId} />
+        </div>
+      )}
     </section>
   );
 }

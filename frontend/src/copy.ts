@@ -1,4 +1,4 @@
-import type { Band, Source, Verdict } from "./api";
+import type { Band, Origin, Source, Verdict } from "./api";
 
 // UI copy: short, plain sentences. No exclamation marks, no em dashes.
 
@@ -7,6 +7,19 @@ export const SOURCES: { id: Source; label: string; hint: string }[] = [
   { id: "plain", label: "Plain text", hint: "Each line is read as one message." },
   { id: "sms", label: "Single SMS", hint: "The whole text is read as one message." },
 ];
+
+export const ORIGINS: { id: Origin; label: string }[] = [
+  { id: "whatsapp", label: "WhatsApp" },
+  { id: "sms", label: "SMS" },
+  { id: "telegram", label: "Telegram" },
+  { id: "facebook", label: "Facebook" },
+  { id: "instagram", label: "Instagram" },
+  { id: "email", label: "Email" },
+  { id: "phone_call", label: "Phone call" },
+  { id: "other", label: "Other" },
+];
+
+export const PRIVACY_NOTE = "Your chat is analysed in memory and is not stored. Only the verdict and source are counted.";
 
 export const VERDICT_TITLE: Record<Verdict, string> = {
   scam: "This looks like a scam",
