@@ -12,7 +12,7 @@
   width: 100%;
   max-width: 480px;
   margin: 0 auto;
-  padding: 16px 16px 40px;
+  padding: 16px 16px 120px; /* room for the floating step bar */
 }
 
 .intro {
@@ -29,7 +29,7 @@
     column-gap: 64px;
     row-gap: 40px;
     max-width: 1040px;
-    padding: 24px 32px 80px;
+    padding: 24px 32px 120px;
   }
 
   .intro {

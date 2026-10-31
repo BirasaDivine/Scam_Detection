@@ -141,11 +141,3 @@ export function StepBar({ current, onGo, locked }: StepBarProps) {
     </nav>
   );
 }
-
-export function Footer() {
-  return (
-    <footer className={styles.footer}>
-      <p>ScamGuard, capstone research demonstration. English only.</p>
-    </footer>
-  );
-}

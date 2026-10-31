@@ -185,14 +185,6 @@
   outline-offset: 1px;
 }
 
-.footer {
-  padding: 20px 16px 100px; /* room for the floating step bar */
-  border-top: 1px solid var(--border);
-  color: var(--muted);
-  font-size: 0.875rem;
-  text-align: center;
-}
-
 @media (min-width: 900px) {
   /* Wide screens have room for the illustration on every step */
   .art {

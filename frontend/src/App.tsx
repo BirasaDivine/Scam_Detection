@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ApiError, analyze, getHealth, type Source } from "./api";
 import { formatCount, guessSource, plural } from "./chat";
-import { Footer, Hero, MockBanner, StepBar, TopBar, type Step } from "./components/Layout";
+import { Hero, MockBanner, StepBar, TopBar, type Step } from "./components/Layout";
 import { AddChatStep, type InputTab, type LoadedFile } from "./steps/AddChatStep";
 import { DetailsStep, type ChatSummary } from "./steps/DetailsStep";
 import { ResultStep, type Outcome } from "./steps/ResultStep";
@@ -125,7 +125,6 @@ export default function App() {
         </div>
       </main>
       <StepBar current={step} onGo={setStep} locked={step === 3 && outcome.state === "loading"} />
-      <Footer />
     </div>
   );
 }
