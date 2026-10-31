@@ -48,10 +48,7 @@ export function TopBar() {
       </div>
       <div id={panelId} className={styles.about} hidden={!open}>
         <h2 className={styles.aboutTitle}>About ScamGuard</h2>
-        <p>
-          ScamGuard is a capstone research demonstration. It reads an English chat and gives one verdict, scam or not
-          scam, with a confidence band.
-        </p>
+        <p>ScamGuard reads an English chat and gives one verdict, scam or not scam, with a confidence band.</p>
         <p>It is not a proven detector and it can be wrong. {PRIVACY_NOTE}</p>
       </div>
     </div>
