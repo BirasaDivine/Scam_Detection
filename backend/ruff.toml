@@ -1,0 +1,10 @@
+line-length = 120
+target-version = "py311"
+extend-exclude = ["model"]
+
+[lint]
+select = ["E", "F", "W", "B", "I"]
+
+[lint.per-file-ignores]
+# Sample WhatsApp exports keep their real, long lines
+"tests/test_parsing.py" = ["E501"]

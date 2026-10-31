@@ -80,6 +80,13 @@ cd backend;  .\.venv\Scripts\python -m pytest
 cd frontend; npm test
 ```
 
+Lint (Ruff for Python, ESLint for TypeScript):
+
+```powershell
+cd backend;  .\.venv\Scripts\python -m ruff check .
+cd frontend; npm run lint
+```
+
 ## Model files
 
 Put `svm_plain.joblib`, `cutoffs.json`, `masking.py` and `chunking.py` in `backend/model/`. They are committed, because Render builds the backend image from the repo. `golden_cases.json` and the notebook are gitignored. Uploaded chats must never be committed.

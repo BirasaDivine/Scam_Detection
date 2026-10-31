@@ -18,7 +18,9 @@ ORIGIN_LABEL: dict[Origin, str] = {
 }
 
 ORIGIN_TIP: dict[Origin, str] = {
-    "whatsapp": "Warn people about messages from unknown numbers, and remind them never to share a WhatsApp verification code.",
+    "whatsapp": (
+        "Warn people about messages from unknown numbers, and remind them never to share a WhatsApp verification code."
+    ),
     "sms": "Remind people that banks and mobile money providers never ask for a PIN or code by SMS.",
     "telegram": "Warn people about investment and job offers in Telegram groups and from accounts they do not know.",
     "facebook": "Warn people about Facebook messages and Marketplace sellers that ask for payment before meeting.",
