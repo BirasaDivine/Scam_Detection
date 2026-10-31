@@ -5,7 +5,7 @@ A capstone research demonstration. You upload or paste an English chat, and Scam
 It is not a proven detector. It has not been validated for use in Africa, and it can be wrong.
 
 - Model: LinearSVC on TF-IDF word 1-2 grams, trained on masked text (masking v2). Small, CPU only.
-- No accounts, no database, no analytics. Chats are processed in memory and never stored or logged.
+- No accounts. Chats are processed in memory and never stored or logged. Only counts are kept: each check's verdict, chat format and, for scams, the source the user chose to report.
 - Image upload: planned for a later version.
 
 ## Layout
@@ -35,9 +35,20 @@ $env:SCAMGUARD_ALLOWED_ORIGIN = "http://localhost:5173"
 uvicorn app.main:app --port 8000 --no-access-log
 ```
 
-Settings are read from environment variables (see `backend/.env.example` for the list): `SCAMGUARD_ALLOWED_ORIGIN`, `SCAMGUARD_TIMEOUT_SECONDS` (default 20) and `SCAMGUARD_MODEL_DIR` (default `backend/model`).
+Settings are read from environment variables (see `backend/.env.example` for the list): `SCAMGUARD_ALLOWED_ORIGIN`, `SCAMGUARD_TIMEOUT_SECONDS` (default 20), `SCAMGUARD_MODEL_DIR` (default `backend/model`), `DATABASE_URL` (default: SQLite at `backend/data/scamguard.db`) and `SCAMGUARD_ADMIN_TOKEN`.
 
 API: `POST /analyze` takes JSON `{"text": "...", "source": "whatsapp" | "plain" | "sms"}` or a multipart form with `file` (.txt, at most 1 MB) and `source`. Errors come back as `{"detail": "..."}` with 400, 413, 415, 422 or 504. Error messages never repeat what was sent.
+
+## Counts and Insights
+
+Each successful check is counted with its verdict (`scam` or `not_scam`), its chat format (`whatsapp`, `plain`, `sms`) and the time. The text, file name and score are never stored. `/analyze` returns a `record_id` for the counted check.
+
+- After a scam verdict the page asks, optionally, where the message came from: WhatsApp, SMS, Telegram, Facebook, Instagram, Email, Phone call or Other. It sends `POST /checks/{record_id}/origin` with `{"origin": "..."}`. A source can be set once, and only on a scam.
+- `GET /stats` returns the totals, counts per format and per scam source, and recommendations. It needs `Authorization: Bearer <SCAMGUARD_ADMIN_TOKEN>`. Without that variable set it answers 404.
+- The Insights page is hidden: open `<site address>/#insights` and enter the admin token. It is not linked from the app.
+- Recommendations start after 5 checks. The main scam channel is named once at least 5 scams have a reported source and one source has 40% or more of them (`backend/app/insights.py`).
+
+Without `DATABASE_URL`, counts go to a SQLite file. Set `DATABASE_URL` to a Postgres address to keep them on a server.
 
 Check it: `Invoke-RestMethod http://localhost:8000/health`
 
@@ -85,7 +96,7 @@ Pick a site name, for example `scamguard-demo`. The address is then `https://sca
 
 1. Push the repo to GitHub.
 2. In Render choose **New > Blueprint** and pick the repo. Render reads `render.yaml` and builds `backend/Dockerfile`.
-3. Render asks for one value. Set `SCAMGUARD_ALLOWED_ORIGIN` to the Netlify address from step 1, with no trailing slash.
+3. Render asks for three values. Set `SCAMGUARD_ALLOWED_ORIGIN` to the Netlify address from step 1, with no trailing slash. Set `DATABASE_URL` to a free Postgres address from [Neon](https://neon.tech) or [Supabase](https://supabase.com) (create a project and copy its connection string). Set `SCAMGUARD_ADMIN_TOKEN` to a long random secret for the Insights page.
 4. Apply. The first build takes several minutes.
 5. When the service is live, open `https://<your-service>.onrender.com/health`. It must show `"mock": false`. Note the service address.
 
@@ -103,6 +114,8 @@ Pick a site name, for example `scamguard-demo`. The address is then `https://sca
 | Render | `SCAMGUARD_ALLOWED_ORIGIN` | Netlify address. Several can be separated with commas, for example to add a custom domain. |
 | Render | `SCAMGUARD_REQUIRE_MODEL` | Already `1` in `render.yaml`. The deploy stops if a model file is missing, instead of serving the mock. |
 | Render | `SCAMGUARD_TIMEOUT_SECONDS` | Already `20` in `render.yaml`. |
+| Render | `DATABASE_URL` | Postgres address for the counts. Without it, counts go to SQLite on Render's disk and are lost on every restart or redeploy. |
+| Render | `SCAMGUARD_ADMIN_TOKEN` | Secret for `/stats` and the Insights page. Without it, both are off. |
 | Netlify | `VITE_API_URL` | Render address. It is read at build time, so changing it needs a new deploy. |
 
 ### Things to know
@@ -119,6 +132,8 @@ Pick a site name, for example `scamguard-demo`. The address is then `https://sca
 | The page says it could not reach the checker | `SCAMGUARD_ALLOWED_ORIGIN` does not match the Netlify address exactly. Check `https`, spelling and the trailing slash. Or the service is still waking up, so try again. |
 | Netlify build fails with "VITE_API_URL is not set" | Add the variable and deploy again. |
 | Render deploy fails with "SCAMGUARD_REQUIRE_MODEL is set but these model files are missing" | A file in `backend/model/` was not committed. |
+| Insights says the token is not right, or that insights are off | `SCAMGUARD_ADMIN_TOKEN` on Render is missing or different from what you typed. |
+| Insights counts reset to zero | `DATABASE_URL` is not set on Render, so counts were kept on its temporary disk. |
 | The page shows the MOCK MODEL banner | The backend is running without model files. This cannot happen on Render while `SCAMGUARD_REQUIRE_MODEL` is `1`. |
 
 To try the image on your computer first:
