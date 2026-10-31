@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import App from "../App";
 import type { AnalyzeResult, Stats } from "../api";
-import { InsightsPage } from "../InsightsPage";
+import { InsightsPage } from "../pages/InsightsPage";
 import { RESULT } from "../test-utils";
 
 afterEach(() => {

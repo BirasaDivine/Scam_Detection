@@ -6,7 +6,7 @@ import "@fontsource/ibm-plex-sans/latin-600.css";
 import "@fontsource/ibm-plex-mono/latin-400.css";
 import "./styles/tokens.css";
 import App from "./App";
-import { InsightsPage } from "./InsightsPage";
+import { InsightsPage } from "./pages/InsightsPage";
 
 function Root() {
   const [hash, setHash] = useState(window.location.hash);

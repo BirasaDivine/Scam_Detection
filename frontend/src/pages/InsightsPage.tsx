@@ -1,10 +1,10 @@
 import { ArrowsClockwise, Lightbulb, LockSimple, SignOut, WarningCircle } from "@phosphor-icons/react";
 import { useCallback, useEffect, useState, type FormEvent } from "react";
-import { ApiError, getStats, type Stats } from "./api";
-import { formatCount } from "./chat";
-import ui from "./components/ui.module.css";
-import { ORIGINS, SOURCES } from "./copy";
-import app from "./App.module.css";
+import { ApiError, getStats, type Stats } from "../api";
+import { formatCount } from "../chat";
+import ui from "../components/ui.module.css";
+import { ORIGINS, SOURCES } from "../copy";
+import app from "../App.module.css";
 import styles from "./InsightsPage.module.css";
 
 const TOKEN_KEY = "scamguard-admin-token";
