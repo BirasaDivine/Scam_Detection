@@ -1,3 +1,9 @@
+"""Prints the entities spaCy finds in sample sentences with African names.
+
+A manual check of how well en_core_web_sm spots names. Run from backend/:
+    python scripts/check_name_entities.py
+"""
+
 import spacy
 
 nlp = spacy.load("en_core_web_sm")
@@ -15,7 +21,6 @@ tests = [
     "Send the fee to Jean Claude Niyonzima today.",
 ]
 
-caught = 0
 for t in tests:
     found = [(e.text, e.label_) for e in nlp(t).ents]
     print(t, "->", found)
