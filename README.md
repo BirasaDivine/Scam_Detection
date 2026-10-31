@@ -18,22 +18,40 @@ backend/    FastAPI service (Python 3.11)
 frontend/   React + Vite + TypeScript, CSS Modules
 ```
 
-## Requirements
+## Installation
 
-- Python 3.11 (`py -3.11 --version`)
-- Node.js 22 LTS (`node --version`)
+You need [Python 3.11](https://www.python.org/downloads/) and [Node.js 22](https://nodejs.org/). The commands below are for PowerShell on Windows.
 
-## Run the backend (PowerShell)
+**1. Get the code**
+
+```powershell
+git clone https://github.com/BirasaDivine/Scam_Detection.git
+cd Scam_Detection
+```
+
+**2. Start the backend** (first terminal)
 
 ```powershell
 cd backend
 py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
 pip install -r requirements-dev.txt
-$env:SCAMGUARD_ALLOWED_ORIGIN = "http://localhost:5173"
-uvicorn app.main:app --port 8000 --no-access-log
+uvicorn app.main:app --port 8000
 ```
+
+**3. Start the frontend** (second terminal, from the `Scam_Detection` folder)
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+**4. Open http://localhost:5173** and check a chat.
+
+If PowerShell blocks `Activate.ps1`, run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once and try again.
+
+To run the tests: `.\.venv\Scripts\python -m pytest` in `backend`, and `npm test` in `frontend`.
 
 
 API: `POST /analyze` takes JSON `{"text": "...", "source": "whatsapp" | "plain" | "sms"}` or a multipart form with `file` (.txt, at most 1 MB) and `source`. Errors come back as `{"detail": "..."}` with 400, 413, 415, 422 or 504. Error messages never repeat what was sent.
