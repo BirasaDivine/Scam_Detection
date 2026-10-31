@@ -1,6 +1,6 @@
 # Render Blueprint for the ScamGuard API.
 # Render dashboard: New > Blueprint > pick this repo. It builds backend/Dockerfile.
-# The only value you type in is SCAMGUARD_ALLOWED_ORIGIN (your Netlify site address).
+# Values you type in: SCAMGUARD_ALLOWED_ORIGIN, DATABASE_URL and SCAMGUARD_ADMIN_TOKEN.
 services:
   - type: web
     name: scamguard-api
@@ -20,3 +20,9 @@ services:
         value: "1"
       - key: SCAMGUARD_TIMEOUT_SECONDS
         value: "20"
+      # Postgres address for the counts (Neon or Supabase free tier). Render's disk is wiped on restart.
+      - key: DATABASE_URL
+        sync: false
+      # Secret that unlocks the hidden Insights page. Make it long and random.
+      - key: SCAMGUARD_ADMIN_TOKEN
+        sync: false

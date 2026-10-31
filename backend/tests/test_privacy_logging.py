@@ -75,7 +75,8 @@ def _free_port() -> int:
 
 def test_real_uvicorn_server_never_prints_request_bodies(tmp_path):
     port = _free_port()
-    env = {**os.environ, "SCAMGUARD_MODEL_DIR": str(tmp_path), "PYTHONUNBUFFERED": "1"}
+    env = {**os.environ, "SCAMGUARD_MODEL_DIR": str(tmp_path), "PYTHONUNBUFFERED": "1",
+           "DATABASE_URL": f"sqlite:///{tmp_path / 'stats.db'}"}
     # Deliberately without --no-access-log: the app must stay quiet on its own.
     proc = subprocess.Popen(
         [sys.executable, "-m", "uvicorn", "app.main:app", "--port", str(port), "--log-level", "debug"],

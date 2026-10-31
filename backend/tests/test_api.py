@@ -9,7 +9,7 @@ from app.schemas import AnalyzeResponse
 from app.scoring import Scorer
 from tests.conftest import FRONTEND_ORIGIN, make_client
 
-RESPONSE_KEYS = {"verdict", "band", "pieces_scored", "source_rule", "model_version", "disclaimer"}
+RESPONSE_KEYS = {"verdict", "band", "pieces_scored", "source_rule", "model_version", "disclaimer", "record_id"}
 DISCLAIMER = (
     "This is a research demonstration. It has not been validated for use in Africa, "
     "and it can be wrong."
@@ -30,6 +30,7 @@ def test_json_text_returns_exactly_the_contract(client):
     assert r.status_code == 200
     body = r.json()
     assert set(body) == RESPONSE_KEYS
+    assert body.pop("record_id")
     assert body == {
         "verdict": "scam", "band": "high", "pieces_scored": 1, "source_rule": "sms",
         "model_version": "mock-0", "disclaimer": DISCLAIMER,

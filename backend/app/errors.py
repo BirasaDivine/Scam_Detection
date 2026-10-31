@@ -14,6 +14,10 @@ WRONG_CONTENT_TYPE = "Send the chat as a .txt file or as text."
 INVALID = "Some details are missing or not valid."
 TIMEOUT = "The check took too long. Try a shorter chat."
 INTERNAL = "Something went wrong on our side. Please try again."
+CHECK_NOT_FOUND = "This check was not found."
+ORIGIN_NOT_ALLOWED = "A source can be added once, and only to a check marked as a scam."
+NOT_ALLOWED = "Not allowed."
+STATS_UNAVAILABLE = "The counts could not be read. Please try again."
 
 
 class AppError(Exception):

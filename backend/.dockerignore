@@ -12,3 +12,4 @@ masking.py
 model/*.ipynb
 model/golden_cases.json
 model/README.md
+data/

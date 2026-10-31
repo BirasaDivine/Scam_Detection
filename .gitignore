@@ -14,3 +14,5 @@ samples/private/
 coverage/
 *.tsbuildinfo
 backend/model/*.ipynb
+# Local SQLite counts
+backend/data/

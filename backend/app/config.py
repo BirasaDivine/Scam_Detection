@@ -22,6 +22,9 @@ class Settings:
     model_dir: Path
     # On a server, refuse to start without the model files instead of serving the mock
     require_model: bool = False
+    database_url: str = f"sqlite:///{BACKEND_DIR / 'data' / 'scamguard.db'}"
+    # Empty turns GET /stats off
+    admin_token: str = ""
 
 
 def load_settings() -> Settings:
@@ -31,4 +34,6 @@ def load_settings() -> Settings:
         timeout_seconds=float(os.environ.get("SCAMGUARD_TIMEOUT_SECONDS", "20")),
         model_dir=Path(os.environ.get("SCAMGUARD_MODEL_DIR", BACKEND_DIR / "model")),
         require_model=os.environ.get("SCAMGUARD_REQUIRE_MODEL", "").strip().lower() in {"1", "true", "yes"},
+        database_url=os.environ.get("DATABASE_URL", "").strip() or Settings.database_url,
+        admin_token=os.environ.get("SCAMGUARD_ADMIN_TOKEN", "").strip(),
     )
